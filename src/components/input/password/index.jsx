@@ -1,29 +1,51 @@
 import React, { useState } from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { IconButton, InputAdornment } from '@material-ui/core';
+import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons';
+import TextField from '@material-ui/core/TextField';
 
-export default function PasswordField({ label, className, ...rest }) {
-    const [showPassword, setShowPassword] = useState(false);
+export default function PasswordField(props) {
+    const { value, onFocus, onBlur, ...inputProps } = props;
+
+    const [type, setType] = useState('password');
+    const [showTypeToggler, setShowTypeToggler] = useState(false);
+
+    function preventDefault(event) {
+        event.preventDefault();
+    }
+
+    function toogleShowPassword() {
+        setType(type === 'password' ? 'text' : 'password');
+    }
+
+    function handleFocus(event) {
+        setShowTypeToggler(true);
+        if (onFocus) onFocus(event);
+    }
+
+    function handleBlur(event) {
+        setShowTypeToggler(!!value);
+        if (onBlur) onBlur(event);
+    }
 
     return (
-        <FormControl className={`${className}`}>
-            <InputLabel>{label}</InputLabel>
-            <Input
-                {...rest}
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
+        <TextField
+            type={type}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            value={value}
+            {...inputProps}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position='end' style={{
+                        cursor: 'pointer',
+                        opacity: showTypeToggler ? 1 : 0
+                    }}>
+                        <IconButton tabIndex={-1} onClick={toogleShowPassword} onMouseDown={preventDefault}>
+                            {type === 'text' ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
                         </IconButton>
                     </InputAdornment>
-                }
-            />
-        </FormControl>
+                )
+            }}
+        />
     );
 }
