@@ -7,7 +7,7 @@ import PasswordField from '../components/input/password';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { VscAccount,VscSignIn } from 'react-icons/vsc';
-import {CadastroUsuario} from '../pages/CadastroUsuario'
+import  CadastroUsuario  from '../pages/CadastroUsuario'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -106,8 +106,9 @@ function handleSubmit(event) {
                         size="small"
                         type="submit"
                         startIcon={<VscAccount/>} 
-                        onclick="CadastroUsuario()"        
-                                   >
+                        //onclick={() => CadastroUsuario()}     
+                        href= '/CadastroUsuario'
+                    >
                           Criar uma conta
                     </Button>
             </form>      
